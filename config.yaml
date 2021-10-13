@@ -1,8 +1,4 @@
 Subfolders: [GUI]
-# Gamepad:
-#  file: Gamepad
-#  varclass: Gamepad
-#  frequency: 100
 Joystick:
   file: Joystick
   varclass: Joystick
@@ -44,13 +40,13 @@ Thrusters:
   varclass: Thrusters
   frequency: 10
 EM1:
-  name: EM1
+  device: EM1
   file: EM
   varclass: EM
   frequency: 1
-  address: 0x31
+  address: 0x30
 EM2:
-  name: EM2
+  device: EM2
   file: EM
   varclass: EM
   frequency: 1
@@ -59,22 +55,41 @@ Gripper:
   file: Gripper
   varclass: Gripper
   frequency: 1
+  device: gripper
+  address: 0x22
+  speed: 10000 # 0 - 32767
+Erector:
+  file: Gripper
+  varclass: Gripper
+  frequency: 1
+  device: erector
   address: 0x21
-  speed: 17000 # 0 - 32767
-#Logger:
-#  file: Logger
-#  varclass: Logger
-#  frequency: 1
-#  Print: True
-#  Log: True
-#  Topics: "Thruster" #All Topicss: gamepad, command, Thruster, info, can, log
+  speed: 8000
+## Logger:
+##  file: Logger
+##  varclass: Logger
+##  frequency: 1
+##  Print: True
+##  Log: True
+##  Topics: "Thruster" #All Topicss: gamepad, command, Thruster, info, can, log
 CAN_Handler:
   file: CAN_Handler
   varclass: CAN_Handler
   frequency: 1
 GUI:
-  file: main
+  file: GUI
   varclass: GUI
+  frequency: 30
+MoveForward:
+  file: Move_Forward
+  varclass: Move_Forward
+  frequency: 10
+  start_countdown: 0.5
+  duration: 10
+  power: 1
+_TestCaseSend:
+  file: GUI
+  varclass: TestCaseSend
   frequency: 30
 # pubsender:
 #    file: pubsender
@@ -99,3 +114,5 @@ GUI:
 #    file: socketpubsub
 #    varclass: spub
 #    frequency: 1
+_Module_Manager:
+  terminal_frequency: 150

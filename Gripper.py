@@ -1,22 +1,23 @@
-from Module_Base_Async import Module
-from Module_Base_Async import AsyncModuleManager
+from Module_Base import Module, Async_Task
 from pubsub import pub
 import asyncio
 
 class Gripper(Module):
-    def __init__(self, address, speed):
+    def __init__(self, device, address, speed):
         super().__init__()
-        self.speed = speed
+        self.device = device
+        self.speed = int(speed)
         self.address = address
-        pub.subscribe(self.Listener, "gamepad.gripper")
+        exec(f'pub.subscribe(self.Listener, "gamepad.{self.device}")')
 
-    def run(self):
+    @Async_Task.loop(1)
+    async def run(self):
         pass
 
     def Listener(self, message):
-        if message["extend"]:
+        if message["tool_state"] == 1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, self.speed >> 8 & 0xff, self.speed & 0xff]})
-        elif message["retract"]:
+        elif message["tool_state"] == -1:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, -self.speed >> 8 & 0xff, -self.speed & 0xff]})
         else:
             pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [32, 0x00, 0x00]})
@@ -34,7 +35,7 @@ class __Test_Case_Send__(Module):
 
 if __name__ == "__main__":
 
-    Gripper = Gripper('0x21', 17000)
+    Gripper = Gripper('gripper', '0x21', 17000)
     Gripper.start(1)
     __Test_Case_Send__ = __Test_Case_Send__()
     __Test_Case_Send__.start(1)

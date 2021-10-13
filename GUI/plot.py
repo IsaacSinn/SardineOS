@@ -16,9 +16,9 @@ class Plot:
         self.bar_width = 17
         self.labels = labels
         self.axes = Axis(self.screen, self.screen_width, self.screen_height, self.xliftoff, self.yliftoff, self.bar_width)
-        self.movement = 0
+        self.movement = [0, 0, 0, 0, 0, 0]
         self.profile = 0
-        self.power = 0
+        self.power = [0, 0, 0, 0, 0, 0]
         self.charts = 0
         pub.subscribe(self.movement_handler, "gamepad.movement")
         pub.subscribe(self.profile_handler, "gamepad.profile")
@@ -44,7 +44,7 @@ class Plot:
         self.profile = message
 
     def power_handler(self, message):
-        self.power = message["Thruster_message"]
+        self.power = message["Thruster_message"][0]
 
     def update_charts(self):
-        self.charts = [self.movement, self.power[0]]
+        self.charts = [self.movement, self.power]

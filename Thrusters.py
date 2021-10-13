@@ -13,8 +13,7 @@ can.send
 '''
 
 
-from Module_Base_Async import Module
-from Module_Base_Async import AsyncModuleManager
+from Module_Base import Module, Async_Task
 from pubsub import pub
 import yaml
 import numpy as np
@@ -52,8 +51,8 @@ class Thrusters(Module):
                 else:
                     self.target_power[0][counter] = 0
             #print(self.target_power)
-    @Module.loop(1)
-    def run(self):
+    @Async_Task.loop(1)
+    async def run(self):
         rate = self.rate * (1 / self.interval)
         #print("rate: ", rate)
         for list in self.target_power:
@@ -72,7 +71,7 @@ class Thrusters(Module):
                     self.output_power[counter] = int(self.output_power[counter]*32767)
                 else:
                     self.output_power[counter] = int(self.output_power[counter]*32768)
-
+                #print(self.Thrusters)
                 pub.sendMessage("can.send", message = {"address": self.Thrusters[counter]["Address"], "data": [32, self.output_power[counter] >> 8 & 0xff, self.output_power[counter] & 0xff]})
         #print(f"difference: {self.difference}")
         #print(f"current_power: {self.current_power}")
