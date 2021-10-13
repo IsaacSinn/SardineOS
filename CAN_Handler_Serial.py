@@ -23,8 +23,8 @@ can.receive.<arbitration_id>:
 	"timestamp" <float>
 
 '''
-
-import at_serial_can as can
+import can
+import at_serial_can
 from Module_Base_Async import Module
 from Module_Base_Async import AsyncModuleManager
 from pubsub import pub
@@ -32,7 +32,7 @@ from pubsub import pub
 class CAN_Handler(Module):
     def __init__(self):
         super().__init__()
-        self.bus = can.ATSerialBus(channel="COM4", bitrate=250000)
+        self.bus = at_serial_can.ATSerialBus(channel="COM7", bitrate=250000)
         pub.subscribe(self.message_listener, "can.send")
         #notifier = can.Notifier(self.bus, [CAN_Listener])
 
@@ -40,10 +40,12 @@ class CAN_Handler(Module):
         msg = can.Message(arbitration_id = message["address"], data = message["data"], is_extended_id = False)
         self.bus.send(msg)
         pub.sendMessage("log.sent" , message = msg)
+        print("msg sent")
 
     @Module.asyncloop(1)
     async def run(self):
-        pass
+        msg = self.bus.recv()
+        print(msg)
         '''message = self.bus.recv(1)
         #print("received:", message)
         if message != None:
@@ -51,13 +53,12 @@ class CAN_Handler(Module):
             #print("topic_name: ", topic_name)
             pub.sendMessage(topic_name, message  = {"data": message.data, "extra": {"timestamp": message.timestamp}})'''
 
-
 class __Test_Case_Send__(Module):
     def __init__(self):
         super().__init__()
     def run(self):
         pub.sendMessage('can.send', message = {"address": 0xff,"data": bytearray([0x10])})
-        self.stop_all()
+        #self.stop_all()
 
 if __name__ == "__main__":
     #to test run script on pi, and a CANBUS node that receives 0x10 command
@@ -78,7 +79,7 @@ if __name__ == "__main__":
     can_handler = CAN_Handler()
     can_handler.start(1)
     test_case_send = __Test_Case_Send__()
-    test_case_send.start(1)
+    test_case_send.start(0.2)
     AsyncModuleManager = AsyncModuleManager()
     AsyncModuleManager.register_modules(test_case_send, can_handler)
 
