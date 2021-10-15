@@ -25,14 +25,13 @@ can.receive.<arbitration_id>:
 '''
 import can
 import at_serial_can
-from Module_Base_Async import Module
-from Module_Base_Async import AsyncModuleManager
+from Module_Base import Module, Async_Task
 from pubsub import pub
 
 class CAN_Handler(Module):
     def __init__(self):
         super().__init__()
-        self.bus = at_serial_can.ATSerialBus(channel="COM7", bitrate=250000)
+        self.bus = at_serial_can.ATSerialBus(channel="COM6", bitrate=250000)
         pub.subscribe(self.message_listener, "can.send")
         #notifier = can.Notifier(self.bus, [CAN_Listener])
 
@@ -42,7 +41,7 @@ class CAN_Handler(Module):
         pub.sendMessage("log.sent" , message = msg)
         print("msg sent")
 
-    @Module.asyncloop(1)
+    @Async_Task.loop(1)
     async def run(self):
         msg = self.bus.recv()
         print(msg)
