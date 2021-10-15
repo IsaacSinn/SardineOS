@@ -73,7 +73,7 @@ Erector:
 ##  Log: True
 ##  Topics: "Thruster" #All Topicss: gamepad, command, Thruster, info, can, log
 CAN_Handler:
-  file: CAN_Handler
+  file: CAN_Handler_Serial
   varclass: CAN_Handler
   frequency: 1
 GUI:
