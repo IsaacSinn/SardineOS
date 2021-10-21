@@ -43,7 +43,7 @@ ThrusterBR:
   Deadzone: 0.1
 ThrusterUF:
   Name: ThrusterUF
-  Address: 0x1E
+  Address: 0x17
   Invert: False
   Position: 0,0.182,0.056
   Direction: 0,0,1
