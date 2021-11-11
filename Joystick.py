@@ -67,7 +67,7 @@ def buttons_pressed(*button_records: "list[float, float]", all = False):
             return True
         else:
             return False
-    
+
 
 
 class Joystick(Module):
@@ -90,7 +90,7 @@ class Joystick(Module):
         self.active_tool = ""
         self.active_tools = ("gamepad.gripper", "gamepad.EM1", "gamepad.EM2", "gamepad.erector")
         self.bumper_hold = (True, False, False, True)  #Determines if the corresponding active tool requires holding down activation
-        self.em_states ={"gamepad.EM1L": False, "gamepad.EM1R": False, "gamepad.EM2L": False, "gamepad.EM2R":False} 
+        self.em_states ={"gamepad.EM1L": False, "gamepad.EM1R": False, "gamepad.EM2L": False, "gamepad.EM2R":False}
         self.last_tool = ""
 
         #Inputs
@@ -130,14 +130,14 @@ class Joystick(Module):
         self.EM2_R = False
         self.gripper_default_sent = False
         '''
-        
 
-        
+
+
         super().__init__()
 
     def move_forward_listener(self, message):
         self.move_forward = False
-    
+
     def em_message(self, tool_state):
         if tool_state==1:
             self.em_states[self.active_tool+"L"] = not self.em_states[self.active_tool+"L"]
@@ -145,11 +145,11 @@ class Joystick(Module):
             self.em_states[self.active_tool+"R"] = not self.em_states[self.active_tool+"R"]
         return {"L": self.em_states[self.active_tool+"L"], "R": self.em_states[self.active_tool+"R"]}
 
-    def change_active_tool(self, tool_index : int): 
+    def change_active_tool(self, tool_index : int):
         """
         Automatically handle change of active tool when index to self.active_tools is inputted\n
         self.active_tools = [False, False, False, False] <= Gripper, EM_Left, EM_Right, Erector
-        """ 
+        """
         _new_tool = self.active_tools[tool_index]
         self.active_tool = _new_tool
         pub.sendMessage("gamepad.selected_tool", message = {"tool_index": tool_index})
@@ -227,18 +227,15 @@ class Joystick(Module):
 
     @Async_Task.loop(1, condition = "platform.system() == 'Windows'")
     async def mapping_win(self):
-        LLR, LUD, BLR, RUD, RLR, _ = self.direct_input
+        LLR, LUD, RUD, RLR, BL, BR = self.direct_input
         LLR = 1*deadzoneleft(LLR)
         LUD = -1*deadzoneleft(LUD)
         RLR = 1*deadzoneright(RLR)
         RUD = -1*deadzoneright(RUD)
-        BLR = -1*deadzone_back(BLR)
 
-        ###### TEMP
-
-        RLR = 0
-
-        ######
+        BL = -((BL + 1) / 2)
+        BR = (BR + 1) / 2
+        BLR = deadzone_back(BL + BR)
 
         if self.control_invert:
             self.new_movement_message = [-LLR, -LUD, -RLR, BLR, -RUD, 0]       #(strafe, drive, yaw, updown, tilt, 0)
@@ -295,7 +292,7 @@ class Joystick(Module):
         if button_pressed(self.south_input):
             self.change_active_tool(3)
 
-        
+
         if self.active_tool:
             #if buttons_pressed(self.north_input, self.south_input, self.west_input, self.east_input, all = False):
             self.tool_action()
