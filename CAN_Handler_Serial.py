@@ -31,7 +31,7 @@ from pubsub import pub
 class CAN_Handler(Module):
     def __init__(self):
         super().__init__()
-        self.bus = at_serial_can.ATSerialBus(channel="COM7", bitrate=250000)
+        self.bus = at_serial_can.ATSerialBus(channel="COM3", bitrate=250000)
         pub.subscribe(self.message_listener, "can.send")
         #notifier = can.Notifier(self.bus, [CAN_Listener])
 
@@ -44,9 +44,10 @@ class CAN_Handler(Module):
     @Async_Task.loop(1)
     async def run(self):
         msg = self.bus.recv(0)
-        topic = "can.receive." + str(arbitration_id)
+        # topic = "can.receive." + str(arbitration_id)
         if msg is not None:
-            pub.sendMessage("can.receive.", msg)
+            #pub.sendMessage("can.receive.", msg)
+            print("CAN RX" , msg)
 
 
 class __Test_Case_Send__(Module):

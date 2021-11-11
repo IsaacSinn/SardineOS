@@ -233,6 +233,13 @@ class Joystick(Module):
         RLR = 1*deadzoneright(RLR)
         RUD = -1*deadzoneright(RUD)
         BLR = -1*deadzone_back(BLR)
+
+        ###### TEMP
+
+        RLR = 0
+
+        ######
+
         if self.control_invert:
             self.new_movement_message = [-LLR, -LUD, -RLR, BLR, -RUD, 0]       #(strafe, drive, yaw, updown, tilt, 0)
         else:
