@@ -80,7 +80,7 @@ GUI:
   file: GUI
   varclass: GUI
   frequency: 30
-MoveForward:
+_MoveForward:
   file: Move_Forward
   varclass: Move_Forward
   frequency: 10

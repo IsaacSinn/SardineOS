@@ -227,7 +227,8 @@ class Joystick(Module):
 
     @Async_Task.loop(1, condition = "platform.system() == 'Windows'")
     async def mapping_win(self):
-        LLR, LUD, RUD, RLR, BL, BR = self.direct_input
+        LLR, LUD, RLR, RUD, BL, BR = self.direct_input
+        #print(self.direct_input)
         LLR = 1*deadzoneleft(LLR)
         LUD = -1*deadzoneleft(LUD)
         RLR = 1*deadzoneright(RLR)

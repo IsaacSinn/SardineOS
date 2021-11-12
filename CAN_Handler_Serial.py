@@ -31,7 +31,7 @@ from pubsub import pub
 class CAN_Handler(Module):
     def __init__(self):
         super().__init__()
-        self.bus = at_serial_can.ATSerialBus(channel="COM3", bitrate=250000)
+        self.bus = at_serial_can.ATSerialBus(channel="COM4", bitrate=250000)
         pub.subscribe(self.message_listener, "can.send")
         #notifier = can.Notifier(self.bus, [CAN_Listener])
 
