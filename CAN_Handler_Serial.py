@@ -39,15 +39,14 @@ class CAN_Handler(Module):
         msg = can.Message(arbitration_id = message["address"], data = message["data"], is_extended_id = False)
         self.bus.send(msg)
         # pub.sendMessage("log.sent" , message = msg)
-        # print("msg sent")
 
-    @Async_Task.loop(1)
-    async def run(self):
-        msg = self.bus.recv(0)
-        # topic = "can.receive." + str(arbitration_id)
-        if msg is not None:
-            #pub.sendMessage("can.receive.", msg)
-            print("CAN RX" , msg)
+    # @Async_Task.loop(1)
+    # async def run(self):
+    #     msg = self.bus.recv(0)
+    #     # topic = "can.receive." + str(arbitration_id)
+    #     if msg is not None:
+    #         #pub.sendMessage("can.receive.", msg)
+    #         print("CAN RX" , msg)
 
 
 class __Test_Case_Send__(Module):

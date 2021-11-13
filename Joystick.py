@@ -182,7 +182,7 @@ class Joystick(Module):
                 pub.sendMessage("gamepad.em_states", message = self.em_states)
 
 
-    @Async_Task.loop(1)
+    @Async_Task.loop(3)
     async def get_joystick(self):
         pygame.event.pump()
         for i in range(self.joystick.get_numaxes()):
@@ -225,7 +225,7 @@ class Joystick(Module):
         self.south_input = [self.south_input[0], hat_mapping(self.joystick.get_hat(0))[3]]
 
 
-    @Async_Task.loop(1, condition = "platform.system() == 'Windows'")
+    @Async_Task.loop(3, condition = "platform.system() == 'Windows'")
     async def mapping_win(self):
         LLR, LUD, RLR, RUD, BL, BR = self.direct_input
         #print(self.direct_input)
@@ -244,7 +244,7 @@ class Joystick(Module):
             self.new_movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]
 
 
-    @Async_Task.loop(1, condition = "platform.system() == 'Linux'")
+    @Async_Task.loop(3, condition = "platform.system() == 'Linux'")
     async def mapping_linux(self):
         LLR, LUD, BL, RLR, RUD, BR = self.direct_input
         LLR = 1*deadzoneleft(LLR)
@@ -259,11 +259,12 @@ class Joystick(Module):
         else:
             self.new_movement_message = [ LLR,  LUD, -RLR, BLR,  RUD, 0]
 
-    @Async_Task.loop(1)
+    @Async_Task.loop(3)
     async def pub_loop(self):
         if self.new_movement_message != self.movement_message:
             self.movement_message = self.new_movement_message[:]
         if not self.move_forward:
+            #print(self.movement_message)
             pub.sendMessage("gamepad.movement", message = {"gamepad_message":self.movement_message})
 
         if button_pressed(self.l_stick_input):
@@ -275,6 +276,7 @@ class Joystick(Module):
 
         if button_pressed(self.x_input):
             self.control_invert = not self.control_invert
+            #print(self.control_invert)
             pub.sendMessage("gamepad.invert", message = {"invert": self.control_invert}) #For GUI
 
         if button_pressed(self.a_input):
@@ -304,36 +306,38 @@ class Joystick(Module):
 
 if __name__ == "__main__":
     from Module_Base import ModuleManager
-    def debug_listener_profile(message):
-        print("\t\t\t\t\t", "profile", message,"\n")
+
+    def debug_listener(message):
+        print("message: ", message)
 
     def debug_listener_movement(message):
-        print(message["gamepad_message"])
+        print("movement: ", movement)
+    # def debug_listener_EM1(message):
+    #     print("EM1: ", message)
+    # def debug_listener_EM2(message):
+    #     print("EM2: ", message)
+    # def debug_listener_gripper(message):
+    #     print("gripper: ", message)
+    # def debug_listener_erector(message):
+    #     print("erector: ", message)
+    # def debug_listener_tool_states(message):
+    #     print("em_state", message)
+    # def debug_listener_selected_tool(message):
+    #     print("selected_tool", message)
 
-    def debug_listener_EM1(message):
-        print("EM1: ", message)
-    def debug_listener_EM2(message):
-        print("EM2: ", message)
-    def debug_listener_gripper(message):
-        print("gripper: ", message)
-    def debug_listener_erector(message):
-        print("erector: ", message)
-    def debug_listener_tool_states(message):
-        print("em_state", message)
-    def debug_listener_selected_tool(message):
-        print("selected_tool", message)
 
 
-    pub.subscribe(debug_listener_profile, 'gamepad.profile')
     joystick = Joystick()
     joystick.start(50)
-    pub.subscribe(debug_listener_gripper, "gamepad.gripper")
-    #pub.subscribe(debug_listener_movement, 'gamepad.movement')
-    pub.subscribe(debug_listener_EM1, 'gamepad.EM1')
-    pub.subscribe(debug_listener_EM2, 'gamepad.EM2')
-    pub.subscribe(debug_listener_erector, 'gamepad.erector')
-    pub.subscribe(debug_listener_tool_states, "gamepad.em_states")
-    pub.subscribe(debug_listener_selected_tool, "gamepad.selected_tool")
+    # pub.subscribe(debug_listener_profile, 'gamepad.profile')
+    # pub.subscribe(debug_listener_gripper, "gamepad.gripper")
+    pub.subscribe(debug_listener, 'gamepad.movement')
+    pub.subscribe(debug_listener, 'gamepad.invert')
+    # pub.subscribe(debug_listener_EM1, 'gamepad.EM1')
+    # pub.subscribe(debug_listener_EM2, 'gamepad.EM2')
+    # pub.subscribe(debug_listener_erector, 'gamepad.erector')
+    # pub.subscribe(debug_listener_tool_states, "gamepad.em_states")
+    # pub.subscribe(debug_listener_selected_tool, "gamepad.selected_tool")
     #pub.subscribe(debug_listener_profile, 'gamepad.profile')
     mm = ModuleManager("")
     mm.start(1)

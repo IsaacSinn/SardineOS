@@ -75,7 +75,7 @@ Erector:
 CAN_Handler:
   file: CAN_Handler_Serial
   varclass: CAN_Handler
-  frequency: 100
+  frequency: 50
 GUI:
   file: GUI
   varclass: GUI
