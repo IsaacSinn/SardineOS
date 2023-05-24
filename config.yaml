@@ -35,6 +35,13 @@ ProfileD:
   activate: 'D'
   max_percentage: 30
   formula_modifier: 50
+Light:
+  name: Light
+  file: lights
+  varclass: Light
+  device: light
+  frequency: 1
+  address: 0x51
 ThrusterPower:
   file: Thruster_Power
   varclass: Thruster_Power
