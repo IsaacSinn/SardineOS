@@ -7,6 +7,7 @@ class Light(Module):
         super().__init__()
         self.device = device
         self.address = address
+        self.light_on = False
         exec(f'pub.subscribe(self.Listener, "gamepad.{self.device}")')
 
     @Async_Task.loop(1)
@@ -15,9 +16,13 @@ class Light(Module):
 
     def Listener(self, message):
         if message["light"] == 1:
-            pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [60, 0xFF, 0xFF, 0xFF]})
-        elif message["light"] == 0:
-            pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [61]})
+            if self.light_on:
+                pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [61]})
+                self.light_on = False
+            else:
+                pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [60, 0xFF, 0xFF, 0xFF]})
+                self.light_on = True
+        
 
 class __Test_Case_Send__(Module):
     def __init__(self):
