@@ -36,7 +36,7 @@ ProfileD:
   max_percentage: 30
   formula_modifier: 50
 Light:
-  name: Light
+  device: Light
   file: lights
   varclass: Light
   device: light
@@ -51,34 +51,34 @@ Thrusters:
   varclass: Thrusters
   frequency: 10
 EM1:
-  name: EM1
+  device: EM1
   file: EM
   varclass: EM
   frequency: 1
   address: 0x33
 EM2:
-  name: EM2
+  device: EM2
   file: EM
   varclass: EM
   frequency: 1
-  address: 0x35
+  address: 0x30
 Gripper:
   file: Servo
   varclass: Servo
-  frequency: 10
+  frequency: 16
   device: gripper
-  address: 0x43
+  address: 0x44
   increment: 24
-  pos: 1000 # 0 - 32767
+  pos: 1100
   minimum: 884
-  maximum: 1196
+  maximum: 1208
 Erector:
   file: Gripper
   varclass: Gripper
   frequency: 1
   device: erector
-  address: 0x21
-  speed: 6000
+  address: 0x23
+  speed: 4000
   flip: 1
 #Logger:
 #  file: Logger
@@ -92,7 +92,7 @@ CAN_Handler:
   varclass: CAN_Handler
   frequency: 1
 GUI:
-  file: main
+  file: GUI
   varclass: GUI
   frequency: 30
 MoveForward:
