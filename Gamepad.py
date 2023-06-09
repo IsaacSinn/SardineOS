@@ -87,7 +87,7 @@ class Gamepad(Module):
         self.EM1_R = 0
         self.EM2_L = 0
         self.EM2_R = 0
-        self.light = 0
+        self.light = False
 
     @Module.asyncloop(1)
     async def run2(self):

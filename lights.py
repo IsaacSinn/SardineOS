@@ -15,13 +15,11 @@ class Light(Module):
         pass
 
     def Listener(self, message):
-        if message["light"] == 1:
-            if self.light_on:
-                pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [61]})
-                self.light_on = False
-            else:
-                pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [60, 0xFF, 0xFF, 0xFF]})
-                self.light_on = True
+        if message["light"]:
+            pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [60, 0xFF, 0xFF, 0xFF]})
+        elif not message["light"]:
+            pub.sendMessage('can.send', message = {"address": eval(self.address), "data": [61]})
+
         
 
 class __Test_Case_Send__(Module):
