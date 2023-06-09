@@ -35,7 +35,7 @@ class __Test_Case_Send__(Module):
 
 if __name__ == "__main__":
 
-    Light = Light('light', '0x61')
+    Light = Light('Light', '0x61')
     Light.start(1)
     __Test_Case_Send__ = __Test_Case_Send__()
     __Test_Case_Send__.start(1)
