@@ -155,6 +155,7 @@ class Gamepad(Module):
                     '''pub.sendMessage("gamepad.movement_activation", message = {"activate": "transectline"})
                     pub.sendMessage("gamepad.show_transectline", message = {"show": not self.show_transectline})'''
                 if (controlcode == 'BTN_NORTH') and (event.state == 1):
+                    print("button")
                     self.light = not self.light
                     pub.sendMessage("gamepad.light", message = {"light": self.light})
 
