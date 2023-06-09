@@ -39,7 +39,6 @@ Light:
   device: Light
   file: lights
   varclass: Light
-  device: light
   frequency: 1
   address: 0x51
 ThrusterPower:
