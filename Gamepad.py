@@ -166,9 +166,9 @@ class Gamepad(Module):
                     self.control_invert = not self.control_invert
                     pub.sendMessage("gamepad.invert", message = {"invert": self.control_invert}) #For GUI
                     if self.control_invert:
-                        pub.sendMessage('can.send', message = {"address": eval(0x61), "data": [60, 0xFF, 0xFF, 0xFF]})
+                        pub.sendMessage('can.send', message = {"address": eval(0xff), "data": [60, 0xFF, 0xFF, 0xFF]})
                     elif not self.control_invert:
-                        pub.sendMessage('can.send', message = {"address": eval(0x61), "data": [61]})
+                        pub.sendMessage('can.send', message = {"address": eval(0xff), "data": [61]})
 
 
 
