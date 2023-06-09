@@ -155,9 +155,8 @@ class Gamepad(Module):
                     '''pub.sendMessage("gamepad.movement_activation", message = {"activate": "transectline"})
                     pub.sendMessage("gamepad.show_transectline", message = {"show": not self.show_transectline})'''
                 if (controlcode == 'BTN_NORTH') and (event.state == 1):
-                    print("button")
                     self.light = not self.light
-                    pub.sendMessage("gamepad.light", message = {"light": self.light})
+                    pub.sendMessage("gamepad.Light", message = {"light": self.light})
 
                 if (controlcode == "BTN_WEST") and (event.state == 1):
                     self.control_invert = not self.control_invert
