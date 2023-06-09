@@ -165,9 +165,9 @@ class Gamepad(Module):
                 if (controlcode == "BTN_WEST") and (event.state == 1):
                     self.control_invert = not self.control_invert
                     pub.sendMessage("gamepad.invert", message = {"invert": self.control_invert}) #For GUI
-                    if self.light:
+                    if self.control_invert:
                         pub.sendMessage('can.send', message = {"address": eval(0x61), "data": [60, 0xFF, 0xFF, 0xFF]})
-                    elif not self.light:
+                    elif not self.control_invert:
                         pub.sendMessage('can.send', message = {"address": eval(0x61), "data": [61]})
 
 
