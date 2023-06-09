@@ -55,19 +55,31 @@ EM1:
   file: EM
   varclass: EM
   frequency: 1
-  address: 0x31
+  address: 0x33
 EM2:
   name: EM2
   file: EM
   varclass: EM
   frequency: 1
-  address: 0x32
+  address: 0x35
 Gripper:
+  file: Servo
+  varclass: Servo
+  frequency: 10
+  device: gripper
+  address: 0x43
+  increment: 24
+  pos: 1000 # 0 - 32767
+  minimum: 884
+  maximum: 1196
+Erector:
   file: Gripper
   varclass: Gripper
   frequency: 1
+  device: erector
   address: 0x21
-  speed: 17000 # 0 - 32767
+  speed: 6000
+  flip: 1
 #Logger:
 #  file: Logger
 #  varclass: Logger
@@ -83,6 +95,19 @@ GUI:
   file: main
   varclass: GUI
   frequency: 30
+MoveForward:
+  file: Move_Forward
+  varclass: Move_Forward
+  frequency: 10
+  start_countdown: 0
+  duration: 10
+  power: -1
+_TestCaseSend:
+  file: GUI
+  varclass: TestCaseSend
+  frequency: 30
+_Module_Manager:
+  terminal_frequency: 150
 # pubsender:
 #    file: pubsender
 #    varclass: pubsender
