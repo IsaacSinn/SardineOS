@@ -156,7 +156,7 @@ class Gamepad(Module):
                     pub.sendMessage("gamepad.show_transectline", message = {"show": not self.show_transectline})'''
                 if (controlcode == 'BTN_NORTH') and (event.state == 1):
                     self.light = not self.light
-                    pub.sendMessage("gamepad.Light", message = {"light": self.light})
+                    pub.sendMessage("gamepad.Light", message = {"Light": self.light})
                 
                 if (controlcode == "BTN_WEST") and (event.state == 1):
                     self.control_invert = not self.control_invert
@@ -178,13 +178,15 @@ if __name__ == "__main__":
         print("EM1: ", message)
     def debug_listener_EM2(message):
         print("EM2: ", message)
-
+    def debug_listener_Light(message):
+        print("Light: ", message)
     debug = Gamepad()
     debug.start(120)
     pub.subscribe(debug_listener_movement, 'gamepad.movement')
     pub.subscribe(debug_listener_profile, 'gamepad.profile')
     pub.subscribe(debug_listener_EM1, 'gamepad.EM1')
     pub.subscribe(debug_listener_EM2, 'gamepad.EM2')
+    pub.subscribe(debug_listener_Light, 'gamepad.Light')
     AsyncModuleManager = AsyncModuleManager()
     AsyncModuleManager.register_modules(debug)
 
