@@ -65,9 +65,6 @@ class Reference:
 
     def __init__(self, reference_yamls):
         self.__dict = {}
-        cwd = os.getcwd()  # Get the current working directory (cwd)
-        files = os.listdir(cwd)  # Get all the files in that directory
-        print("Files in %r: %s" % (cwd, files))
         for yaml_file in reference_yamls:
             self.__dict.update(yaml.load(open(f"{yaml_file}.yaml", 'r'), Loader = yaml.FullLoader))
         self.__yaml_object = self.YAML_var(self.__dict)
